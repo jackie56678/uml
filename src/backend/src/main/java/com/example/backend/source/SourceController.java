@@ -53,7 +53,7 @@ public class SourceController {
                 picture.setUid(user.getId());
                 picture.setDescription(description);
                 picture.setDate(new Date());
-                picture.setUrl(pictureDir + uniqueFileName);
+                picture.setUrl(uniqueFileName);
                 sourceMapper.addPicture(picture);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -84,7 +84,7 @@ public class SourceController {
                 video.setUid(user.getId());
                 video.setDescription(description);
                 video.setDate(new Date());
-                video.setUrl(videoDir + uniqueFileName);
+                video.setUrl(uniqueFileName);
                 sourceMapper.addVideo(video);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -109,6 +109,7 @@ public class SourceController {
         String token = accessToken.substring(7);
         User user = userService.getUserInfoByToken(token);
         List<String> urls = sourceMapper.getAllVideoUrls(user.getId());
+        System.out.println("vidoes\n"+urls);
         return CommonResult.success(urls);
     }
 //    @GetMapping("/images")

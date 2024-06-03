@@ -77,6 +77,7 @@ export default {
         // Clear file list and description after successful upload
         this.fileList = [];
         this.description = '';
+        this.$router.push('/source/video');
       })
       .catch(error => {
         this.$message.error("Failed to upload videos");

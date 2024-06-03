@@ -6,11 +6,13 @@
     </div>
     <div class="resource-list">
       <h2>视频资源</h2>
+
       <div class="video-list">
-        <div v-for="resource in videoResources" :key="resource.sid" class="video-item" @click="viewResource('video', resource.sid)">
-          <video :src="resource.url" controls alt="Video"></video>
+        <div v-for="(url, index) in videoResources" :key="index" class="video-item">
+          <video :src="url" controls alt="Video" @click="viewVideo(url)"></video>
         </div>
       </div>
+
       <el-button class="fixed-add-button" type="primary" @click="addVideo">添加视频</el-button>
     </div>
   </div>
@@ -19,7 +21,7 @@
 
 <script>
 import axios from 'axios';
-
+import { getAccessToken } from "@/utils/auth";
 export default {
   data() {
     return {
@@ -27,24 +29,32 @@ export default {
     };
   },
   created() {
-    // this.fetchVideoResources();    //暂时不调用获取方法
+    this.fetchVideoResources();
   },
   methods: {
     fetchVideoResources() {
-      axios.get('/api/resources?type=video')
+      axios.get('/api/source/videos',{
+        headers:{
+          'Authorization': 'Bearer ' + getAccessToken(),
+        }
+      })
         .then(response => {
-          this.videoResources = response.data;
+          console.log(response.data.data)
+          const baseURL = 'http://localhost:8000/video/';
+          for (let i = 0; i < response.data.data.length; i++) {
+              response.data.data[i] = baseURL + response.data.data[i];
+          }
+          this.videoResources = response.data.data;
         })
         .catch(error => {
           console.error('Error fetching video resources:', error);
         });
     },
     addVideo() {
-      // 添加视频资源的逻辑
       this.$router.push('/source/addVideo');
     },
-    viewResource(type, resourceId) {
-      console.log('查看资源', type, resourceId);
+    viewVideo(url) {
+      console.log(url);
       // 跳转到查看资源的页面，传递当前选中的资源类型和资源ID
       // this.$router.push({ path: '/viewResource', query: { type, id: resourceId }});
     },
@@ -80,6 +90,12 @@ export default {
 .video-item {
   margin-right: 10px;
   margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.video-item video {
+  width: 70%;
+  height: auto;
   cursor: pointer;
 }
 .fixed-add-button {

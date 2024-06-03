@@ -11,9 +11,7 @@
           <img :src="url" alt="Image" @click="viewImage(url)"> 
         </div>
       </div>
-      <!-- <img src="https:\\\/img0.baidu.com/\\it\u=2392209312,2985640217&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=667"> -->
-      <!-- <img src="https://img2.baidu.com/it/u=2074916572,2932976242&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500"> -->
-      <!-- <img src="http://localhost:8080/C:/Users/12952/Pictures/AIGC/picture/7d64b5ef-448b-4920-85c8-1461b55a142e_image (2).png"> -->
+      <!-- <img src="https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/cc11728b4710b912ba1a8ca0c4fdfc0393452290.jpg"> -->
       <el-button class="fixed-add-button" type="primary" @click="addImage">添加图片</el-button>
     </div>
   </div>
@@ -41,7 +39,7 @@ export default {
       })
         .then(response => {
           console.log(response.data.data)
-          const baseURL = 'http://172.18.0.4/ssadmin-server';
+          const baseURL = 'http://localhost:8000/picture/';
           for (let i = 0; i < response.data.data.length; i++) {
               response.data.data[i] = baseURL + response.data.data[i];
           }
@@ -89,12 +87,20 @@ export default {
   position: relative;
 }
 .image-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 10px;
 }
 .image-item {
   margin-right: 10px;
   margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.image-item img {
+  width: 70%;
+  height: auto;
   cursor: pointer;
 }
 .fixed-add-button {
