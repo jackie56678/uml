@@ -5,7 +5,7 @@
       <el-button @click="redirectToVideoPage">视频资源</el-button>
     </div>
     <div class="resource-list">
-      <h2>图片资源</h2>
+      <!-- <h2>图片资源</h2> -->
       <div class="image-list">
         <div v-for="(url, index) in imageResources" :key="index" class="image-item">
           <img :src="url" alt="Image" @click="viewImage(url)"> 

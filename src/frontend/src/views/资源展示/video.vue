@@ -5,7 +5,7 @@
       <el-button type="primary" @click="redirectToVideoPage">视频资源</el-button>
     </div>
     <div class="resource-list">
-      <h2>视频资源</h2>
+      <!-- <h2>视频资源</h2> -->
 
       <div class="video-list">
         <div v-for="(url, index) in videoResources" :key="index" class="video-item">
