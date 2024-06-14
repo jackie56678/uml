@@ -1,10 +1,10 @@
 <template>
   <div class="layout">
     <Sider :isCollapsed="isCollapsed" />
-    <div class="main">
+    <div :class="['main', { 'collapsed': isCollapsed }]">
       <Header :isCollapsed="isCollapsed" @toggle-collapse="handleToggleCollapse" />
       <div class="header-placeholder"></div>
-      <div :class="['content', { 'content-collapsed': isCollapsed }]">
+      <div class="content">
         <router-view></router-view>
       </div>
     </div>
@@ -33,7 +33,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .layout {
   display: flex;
   height: 100vh;
@@ -44,28 +44,23 @@ export default {
   flex-direction: column;
   flex: 1;
   transition: margin-left 0.3s;
-  margin-left: 220px; /* Adjust according to the full width of the sidebar */
+  margin-left: 220px; /* 侧边栏全宽状态下的左边距 */
 }
 
 .main.collapsed {
-  margin-left: 60px; /* Adjust according to the collapsed width of the sidebar */
+  margin-left: 60px; /* 侧边栏收缩状态下的左边距 */
 }
 
 .header-placeholder {
-  height: 60px; /* Height of the header */
+  height: 60px; /* header的高度 */
 }
 
 .content {
   flex: 1;
   padding: 20px;
-  transition: margin-left 0.3s;
-}
-
-.content-collapsed {
-  margin-left: 60px; /* Adjust according to the collapsed width of the sidebar */
-}
-
-.content {
-  margin-left: 220px; /* Adjust according to the full width of the sidebar */
+  background-color: #f5f5f5; /* 确保背景颜色覆盖整个区域 */
+  overflow: auto;
+  height: calc(100vh - 60px); /* 调整以适应header的高度 */
+  box-sizing: border-box;
 }
 </style>
