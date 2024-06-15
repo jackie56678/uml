@@ -1,11 +1,11 @@
 package com.example.backend.user;
 import com.example.backend.CommonResult;
+import com.example.backend.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -33,10 +33,23 @@ public class UserController {
             result.put("success", false);
             result.put("message", "用户名或密码错误");
         }
-
         return result;
     }
 
+    @GetMapping("/menu")
+    public CommonResult<?> getUserMenu(@RequestHeader("Authorization") String ACCESS_TOKEN) {
+        try {
+            String token = ACCESS_TOKEN.substring(7);
+            User userInfo = userService.getUserInfoByToken(token);
+            int role = userInfo.getRole();
+            List<Map<String,String>> menulist =  userService.getMenuList(role);
+//            String
+            return CommonResult.success(menulist);
+        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            return CommonResult.error(400,"身份识别出现错误");
+        }
+    }
     @GetMapping("/info")
     public CommonResult<?> getUserInfo(@RequestHeader("Authorization") String ACCESS_TOKEN) {
         try {

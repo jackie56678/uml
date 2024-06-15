@@ -1,9 +1,12 @@
 package com.example.backend.user;
+import com.example.backend.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -56,8 +59,18 @@ public class UserService {
         }
         return user;
     }
+
+
+    public List<Map<String,String>> getMenuList(int role) throws Exception {
+        List<Map<String,String>> ret = userMapper.getMenuList(role);
+        return  ret;
+    }
     @Transactional
     public void update(User user) {
         userMapper.updateUser(user);
+    }
+
+    public User findUserByUsername(String username) {
+        return  userMapper.findUserByUsername(username);
     }
 }

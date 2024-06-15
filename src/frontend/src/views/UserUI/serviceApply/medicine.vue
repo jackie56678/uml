@@ -1,8 +1,8 @@
 <template>
   <div class="resource-page">
     <div class="resource-navbar">
-      <el-button type="primary" icon="el-icon-picture" @click="redirectToImagePage">图片资源</el-button>
-      <el-button type="primary" icon="el-icon-video-camera" @click="redirectToVideoPage">视频资源</el-button>
+      <el-button type="primary" icon="el-icon-picture" @click="redirectToImagePage">食品资源</el-button>
+      <el-button type="primary" icon="el-icon-picture" @click="redirectToVideoPage">医药资源</el-button>
     </div>
     <div class="resource-list">
       <div class="video-list">
@@ -10,7 +10,7 @@
           <video :src="url" controls alt="Video" @click="viewVideo(url)"></video>
         </div>
       </div>
-      <el-button class="fixed-add-button" type="primary" icon="el-icon-plus" @click="addVideo"></el-button>
+      <!-- <el-button class="fixed-add-button" type="primary" icon="el-icon-plus" @click="addVideo"></el-button> -->
     </div>
   </div>
 </template>
@@ -50,10 +50,10 @@ export default {
       console.log(url);
     },
     redirectToImagePage() {
-      this.$router.push('/source/picture');
+      this.$router.push('/service/food');
     },
     redirectToVideoPage() {
-      this.$router.push('/source/video');
+      this.$router.push('/service/medicine');
     }
   }
 };

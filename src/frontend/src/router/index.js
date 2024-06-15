@@ -9,41 +9,35 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import( '../views/主页/Home.vue')
+    redirect: '/login'
+    // component: () => import( '../views/Cover/Home.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import( '../views/登录注册/Login.vue')
+    component: () => import( '../views/Cover/LogAndReg/Login.vue')
   },
-
-  // {
-  //   path: '/',
-  //   name: 'Login',
-  //   component: () => import( '../views/登录注册/Login.vue')
-  // },
   {
     path: '/register',
     name: 'Register',
-    component: () => import( '../views/登录注册/Register.vue')
+    component: () => import( '../views/Cover/LogAndReg/Register.vue')
   },
-  /////////////////////////////////////////////////////////////
-  {
-    path:'/profile',
-    component:Layout,
-    children:[
-      {
-        path: 'editProfile',
-        name: 'editProfile',
-        component: () => import( '../views/个人主页/editProfile.vue')
-      },
-      {
-        path: '',
-        name: 'profile',
-        component: () => import('../views/个人主页/Profile.vue')
-      },
-    ]
-  },
+  // {
+  //   path:'/profile',
+  //   component:Layout,
+  //   children:[
+  //     {
+  //       path: 'editProfile',
+  //       name: 'editProfile',
+  //       component: () => import( '../views/UserUI/profile/editProfile.vue')
+  //     },
+  //     {
+  //       path: '',
+  //       name: 'profile',
+  //       component: () => import('../views/UserUI/profile/Profile.vue')
+  //     },
+  //   ]
+  // },
   ///////////////////////////////////////////////////////
   {
     path:'/relative',
@@ -52,105 +46,99 @@ const routes = [
       {
         path: 'info',
         name: 'relative',
-        component: () => import( '../views/亲人信息/relative.vue')
+        component: () => import( '../views/UserUI/relative/relative.vue')
       },
       {
         path: 'editRelative',
         name: 'editRelative',
-        component: () => import( '../views/亲人信息/editRelative.vue')
+        component: () => import( '../views/UserUI/relative/editRelative.vue')
       },
       {
         path: 'addRelative',
         name: 'addRelative',
-        component: () => import( '../views/亲人信息/addRelative.vue')
+        component: () => import( '../views/UserUI/relative/addRelative.vue')
       }
     ]
   },
 /////////////////////////////////////////////////////////////////
   {
-    path:'/source',
+    path:'/service',
     component:Layout,
     children:[
       {
-        path: 'picture',
-        name: 'picture',
-        component: () => import('../views/资源展示/picture.vue')
+        path: 'food',
+        name: 'food',
+        component: () => import('../views/UserUI/serviceApply/food.vue')
       },
       {
-        path: 'video',
-        name: 'video',
-        component: () => import('../views/资源展示/video.vue')
-      },
-      {
-        path: 'addPicture',
-        name: 'addPicture',
-        component: () => import( '../views/资源展示/addPicture.vue')
-        // component: () => import( '../views/资源展示/SuccessaddPicture.vue')
-      },
-      {
-        path: 'addVideo',
-        name: 'addVideo',
-        component: () => import( '../views/资源展示/addVideo.vue')
-      },
-      {
-        path: 'editPicture',
-        name: 'editPicture',
-        component: () => import( '../views/资源展示/editPicture.vue')
-      },
-      {
-        path: 'editVideo',
-        name: 'editVideo',
-        component: () => import( '../views/资源展示/editVideo.vue')
-      },
+        path: 'medicine',
+        name: 'medicine',
+        component: () => import('../views/UserUI/serviceApply/medicine.vue')
+      }
     ]
   },
-///////////////////////////////////////////////////////////////////
+  
 {
-  path:'/ai',
-  component:Layout,
-  children:[
-    {
-      path: 'chat',
-      name: 'chat',
-      component: () => import( '../views/与AI聊天/chat.vue')
-    }
-  ]
-},
-///////////////////////////////////////////////////////////////////
-{
-  path:'/health',
+  path:'/file',
   component:Layout,
   children:[
     {
       path: '',   
-      name: 'health',
-      component: () => import( '../views/养生知识/health.vue')
+      name: 'file',
+      component: () => import( '../views/UserUI/healthfile/health.vue')
     }
   ]
 },
 ///////////////////////////////////////////////////////////////////
 {
-  path:'/todo',
+  path:'/activity',
   component:Layout,
   children:[
     {
-      path: 'list',   
-      name: 'list',
-      component: () => import( '../views/语音记事本/todolist.vue')
-    },
-    {
-      path: 'add',   
-      name: 'add',
-      component: () => import( '../views/语音记事本/AddTask.vue')
-    },
-    {
-      path: 'edit',   
-      name: 'edit',
-      component: () => import( '../views/语音记事本/EditTask.vue')
+      path: '',   
+      name: 'activity',
+      component: () => import( '../views/UserUI/activityCheck/activity.vue')
     }
   ]
 },
+
+{
+  path:'/profile',
+  component:Layout,
+  children:[
+    {
+      path: 'editProfile',
+      name: 'editProfile',
+      component: () => import( '../views/UserUI/profile/editProfile.vue')
+    },
+    {
+      path: '',
+      name: 'profile',
+      component: () => import('../views/UserUI/profile/Profile.vue')
+    },
+  ]
+},
+{
+  path:'/worker',
+  component:Layout,
+  children:[
+    {
+      path: 'editProfile',
+      name: 'editProfile',
+      component: () => import( '../views/WorkerUI/profile/editProfile.vue')
+    },
+    {
+      path: '/profile',
+      name: 'profile2',
+      component: () => import('../views/WorkerUI/profile/Profile.vue')
+    },
+  ]
+},
 ]
+
+
+
+
 // 防止连续点击多次路由报错
 let routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {

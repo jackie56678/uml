@@ -50,7 +50,7 @@ public class SourceController {
                 file.transferTo(uploadedFile);
 
                 Picture picture = new Picture();
-                picture.setUid(user.getId());
+                picture.setUid(user.getUid());
                 picture.setDescription(description);
                 picture.setDate(new Date());
                 picture.setUrl(uniqueFileName);
@@ -81,7 +81,7 @@ public class SourceController {
                 file.transferTo(uploadedFile);
 
                 Video video = new Video();
-                video.setUid(user.getId());
+                video.setUid(user.getUid());
                 video.setDescription(description);
                 video.setDate(new Date());
                 video.setUrl(uniqueFileName);
@@ -99,7 +99,7 @@ public class SourceController {
         System.out.println("start");
         String token = accessToken.substring(7);
         User user = userService.getUserInfoByToken(token);
-        List<String> urls = sourceMapper.getAllPictureUrls(user.getId());
+        List<String> urls = sourceMapper.getAllPictureUrls(user.getUid());
         System.out.println(urls);
         return CommonResult.success(urls);
     }
@@ -108,7 +108,7 @@ public class SourceController {
     public CommonResult<List<String>> getVideos(@RequestHeader("Authorization") String accessToken) throws Exception {
         String token = accessToken.substring(7);
         User user = userService.getUserInfoByToken(token);
-        List<String> urls = sourceMapper.getAllVideoUrls(user.getId());
+        List<String> urls = sourceMapper.getAllVideoUrls(user.getUid());
         System.out.println("vidoes\n"+urls);
         return CommonResult.success(urls);
     }

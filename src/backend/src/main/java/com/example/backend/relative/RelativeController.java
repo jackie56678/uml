@@ -22,9 +22,11 @@ public class RelativeController {
 //        relativeService.addRelative(relative);
         try {
             // 可能需要从 token 解析用户 ID
+            System.out.println("1");
             String token = ACCESS_TOKEN.substring(7);
             User user = userService.getUserInfoByToken(token);
-            relative.setId(user.getId());  // 设置任务的用户 ID
+            relative.setId(user.getUid());  // 设置任务的用户 ID
+            System.out.println("2");
             relativeService.addRelative(relative);
             return ResponseEntity.ok("信息添加成功");
         } catch (Exception e) {
@@ -36,7 +38,7 @@ public class RelativeController {
     public List<Relative> getAllRelatives( @RequestHeader("Authorization") String ACCESS_TOKEN) throws Exception {
         String token = ACCESS_TOKEN.substring(7);
         User user = userService.getUserInfoByToken(token);
-        int id = user.getId();
+        int id = user.getUid();
         return relativeService.getAllRelatives(id);
     }
 
@@ -46,7 +48,7 @@ public class RelativeController {
             String token = ACCESS_TOKEN.substring(7);
             User user = userService.getUserInfoByToken(token);
             Relative relative  = relativeService.findRelativeByRId(rid);
-            if (relative != null && relative.getId()==user.getId()) {
+            if (relative != null && relative.getId()==user.getUid()) {
                 return ResponseEntity.ok(relative);
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("访问被拒绝");
@@ -63,7 +65,7 @@ public class RelativeController {
                 System.out.println(token);
                 System.out.println(relative.getId());
                 User user = userService.getUserInfoByToken(token);
-                relative.setId(user.getId());  // 设置任务的用户 ID
+                relative.setId(user.getUid());  // 设置任务的用户 ID
                 relativeService.updateRelative(relative);
                 return ResponseEntity.ok("任务更新成功");
 

@@ -2,10 +2,10 @@
     <div class="background-carousel" :style="{ backgroundImage: `url(${currentImage})` }">
       <div class="overlay">
         <div class="header">
-          <span class="slogan">优雅地老去 一款针对轻度认知障碍患者的生活助手</span>
+          <span class="slogan">智慧养老社区</span>
         </div>
         <div class="auth-buttons">
-          <el-button type="primary" @click="goToLogin">进入助手</el-button>
+          <el-button type="primary" @click="goToLogin">进入社区</el-button>
         </div>
         <div class="text-overlay" v-html="typedText"></div>
       </div>
@@ -25,7 +25,7 @@
         images: [
           "/user_assets/image1.jpeg",
           "/user_assets/image2.jpeg",
-          "/user_assets/image3.jpeg"
+          // "/user_assets/image3.jpeg"
         ],
         typedText: '',
         typingIndex: 0,

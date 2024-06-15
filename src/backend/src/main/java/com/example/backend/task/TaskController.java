@@ -26,7 +26,7 @@ public class TaskController {
             User user = userService.getUserInfoByToken(token);
             // 使用用户ID获取任务列表
             //System.out.println(user.getId());
-            List<Task> tasks = taskService.getTasksByUserId(user.getId());
+            List<Task> tasks = taskService.getTasksByUserId(user.getUid());
             return ResponseEntity.ok(tasks);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
@@ -39,7 +39,7 @@ public class TaskController {
             String token = ACCESS_TOKEN.substring(7);
             // 可能需要从 token 解析用户 ID
             User user = userService.getUserInfoByToken(token);
-            task.setUid(user.getId());  // 设置任务的用户 ID
+            task.setUid(user.getUid());  // 设置任务的用户 ID
             //System.out.println(task.getUid());
             taskService.addTask(task);
             return ResponseEntity.ok("任务添加成功");
@@ -57,7 +57,7 @@ public class TaskController {
             User user = userService.getUserInfoByToken(token);
             Task task = taskService.findTaskById(taskId);
 
-            if (task != null && task.getUid().equals(user.getId())) {
+            if (task != null && task.getUid().equals(user.getUid())) {
                 return ResponseEntity.ok(task);
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("访问被拒绝");
@@ -72,7 +72,7 @@ public class TaskController {
         try {
             String token = ACCESS_TOKEN.substring(7);
             User user = userService.getUserInfoByToken(token);
-            task.setUid(user.getId());  // 设置任务的用户 ID
+            task.setUid(user.getUid());  // 设置任务的用户 ID
             taskService.updateTask(task);
             return ResponseEntity.ok("任务更新成功");
 
@@ -85,7 +85,7 @@ public class TaskController {
         try {
             String token = ACCESS_TOKEN.substring(7);
             User user = userService.getUserInfoByToken(token);
-            task.setUid(user.getId());  // 设置任务的用户 ID
+            task.setUid(user.getUid());  // 设置任务的用户 ID
             taskService.deleteTask(task);
             return ResponseEntity.ok("任务删除成功");
         } catch (Exception e) {

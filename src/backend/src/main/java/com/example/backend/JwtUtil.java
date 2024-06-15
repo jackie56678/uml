@@ -1,4 +1,4 @@
-package com.example.backend.user;
+package com.example.backend;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

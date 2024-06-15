@@ -3,7 +3,7 @@
       <div class="left-section">
         <i :class="[isCollapsed ? 'el-icon-s-unfold' : 'el-icon-s-fold']" class="collapse-icon" @click="toggleCollapse"></i>
         <img src="../../assets/logo.png" alt="Logo" class="logo" />
-        <span class="title">My Application</span>
+        <span class="title">智慧养老社区</span>
       </div>
       <div class="right-section">
         <el-dropdown>
