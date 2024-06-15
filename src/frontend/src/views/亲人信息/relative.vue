@@ -60,6 +60,7 @@ export default {
   padding: 20px;
   background-color: #f5f5f5;
   min-height: calc(100vh - 60px); /* Adjust for header height */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 h2 {
@@ -81,11 +82,12 @@ h2 {
   background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
-  transition: transform 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .relative-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .relative-card .el-card__header {
@@ -109,5 +111,6 @@ h2 {
   position: fixed; /* Fixed positioning */
   bottom: 20px; /* 20px from the bottom */
   right: 20px; /* 20px from the right */
+  z-index: 1000; /* Ensure the button group is on top */
 }
 </style>
