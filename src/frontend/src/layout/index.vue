@@ -37,13 +37,14 @@ export default {
 .layout {
   display: flex;
   height: 100vh;
+  background-color: #f0f2f5;
 }
 
 .main {
   display: flex;
   flex-direction: column;
   flex: 1;
-  transition: margin-left 0.3s;
+  transition: margin-left 0.3s, background-color 0.3s;
   margin-left: 220px; /* 侧边栏全宽状态下的左边距 */
 }
 
@@ -58,9 +59,29 @@ export default {
 .content {
   flex: 1;
   padding: 20px;
-  background-color: #f5f5f5; /* 确保背景颜色覆盖整个区域 */
+  background-color: #ffffff;
   overflow: auto;
   height: calc(100vh - 60px); /* 调整以适应header的高度 */
   box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
+
+.content:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-radius: 4px;
+}
+
+.content::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
 }
 </style>
