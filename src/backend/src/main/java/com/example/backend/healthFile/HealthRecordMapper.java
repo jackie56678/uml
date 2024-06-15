@@ -1,19 +1,23 @@
 package com.example.backend.healthFile;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import java.util.List;
 
 @Mapper
 public interface HealthRecordMapper {
-    @Select("SELECT * FROM HealthRecord WHERE uid = #{uid}")
+    @Select("SELECT * FROM healthrecord WHERE uid = #{uid}")
     HealthRecord getHealthRecordByUid(int uid);
 
-    @Update("UPDATE HealthRecord SET name=#{name}, gender=#{gender}, age=#{age}, height=#{height}, " +
-            "weight=#{weight}, bloodType=#{bloodType}, allergies=#{allergies}, medicalHistory=#{medicalHistory}, " +
-            "medications=#{medications}, smokingStatus=#{smokingStatus}, alcoholUse=#{alcoholUse}, " +
-            "physicalActivity=#{physicalActivity}, diet=#{diet}, bloodPressure=#{bloodPressure}, " +
-            "cholesterolLevel=#{cholesterolLevel}, glucoseLevel=#{glucoseLevel} WHERE uid=#{uid}")
-    int updateHealthRecord(HealthRecord healthRecord);
+    @Update("UPDATE healthrecord SET height=#{healthRecord.height}, weight=#{healthRecord.weight}, bloodtype=#{healthRecord.bloodType}, " +
+            "allergies=#{healthRecord.allergies}, medicalhistory=#{healthRecord.medicalHistory}, " +
+            "medications=#{healthRecord.medications}, smokingstatus=#{healthRecord.smokingStatus}, " +
+            "alcoholuse=#{healthRecord.alcoholUse}, physicalactivity=#{healthRecord.physicalActivity}, " +
+            "diet=#{healthRecord.diet}, bloodpressure=#{healthRecord.bloodPressure}, " +
+            "cholesterollevel=#{healthRecord.cholesterolLevel}, glucoselevel=#{healthRecord.glucoseLevel} " +
+            "WHERE uid=#{uid}")
+    void updateHealthRecord(@Param("uid") int uid, @Param("healthRecord") HealthRecord healthRecord);
+
 }

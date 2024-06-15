@@ -6,8 +6,9 @@
     </div>
     <div class="resource-list">
       <div class="image-list">
-        <div v-for="(url, index) in imageResources" :key="index" class="image-item">
-          <img :src="url" alt="Image" @click="viewImage(url)"> 
+        <div v-for="(item, index) in imageResources" :key="index" class="image-item">
+          <img :src="item.url" alt="Image" @click="viewImage(item)"> 
+          <div class="image-description">{{ item.description }}</div>
         </div>
       </div>
       <el-button class="fixed-add-button" type="primary" icon="el-icon-plus" @click="addImage"></el-button>
@@ -36,8 +37,11 @@ export default {
         }
       })
       .then(response => {
-        const baseURL = 'http://localhost:8000/picture/';
-        this.imageResources = response.data.data.map(image => baseURL + image);
+        this.imageResources = response.data.data.map(image => ({
+          url: 'http://localhost:8000/picture/' + image.url,
+          description: image.description
+          
+        }));
       })
       .catch(error => {
         console.error('Error fetching image resources:', error);
@@ -46,14 +50,15 @@ export default {
     addImage() {
       this.$router.push('/source/addPicture');
     },
-    viewImage(url) {
-      console.log('查看图片:', url);
+    viewImage(item) {
+      console.log('查看图片:', item.url);
+      console.log('图片描述:', item.description);
     },
     redirectToImagePage() {
-      this.$router.push('/service/food');
+      this.$router.push('/worker/food');
     },
     redirectToVideoPage() {
-      this.$router.push('/service/medicine');
+      this.$router.push('/worker/medicine');
     }
   }
 };
@@ -94,6 +99,7 @@ export default {
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
+  position: relative;
 }
 
 .image-item:hover {
@@ -104,6 +110,17 @@ export default {
   width: 100%;
   height: auto;
   display: block;
+}
+
+.image-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 .fixed-add-button {

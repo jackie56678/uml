@@ -3,13 +3,29 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <!-- <el-button type="primary" @click="showInfo" style="float: left;">个人信息</el-button> -->
-          <span>活动列表</span>
-          <!-- <el-button type="primary" @click="showAddTaskModal" style="float: right;">添加活动</el-button> -->
+          <span>用户请求列表</span>
         </div>
   
-        <el-table :data="activities" style="width: 100%">
-          <el-table-column prop="name" label="活动名称" width="500" ></el-table-column>
-          <el-table-column prop="startTime" label="开始时间" width="500"></el-table-column>
+        <el-table :data="tasks" style="width: 100%">
+          <el-table-column prop="name" label="任务事项" width="300" ></el-table-column>
+          <el-table-column prop="ddl" label="截止时间" width="300"></el-table-column>
+          <el-table-column prop="completed" label="完成状态" width="300">
+            <template slot-scope="scope">
+              <el-tag :type="scope.row.completed ? 'success' : 'info'">
+                {{ scope.row.completed ? '已完成' : '未完成' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="修改操作" width="300">
+            <template slot-scope="scope">
+              <el-button size="mini" @click="editTask(scope.row)">修改</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="删除操作" width="300">
+            <template slot-scope="scope">
+              <el-button size="mini" @click="deleteTask(scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
         </el-table>
   
       </el-card>
@@ -17,12 +33,12 @@
   </template>
   
   <script>
-import { fetchActivities, deleteActivity } from '@/api/activity';
-
+  import { fetchtasks } from '@/api/task';
+  import { deletetask } from '@/api/task';
   export default {
     data() {
       return {
-        activities: []
+        tasks: []
       };
     },
     created() {
@@ -30,9 +46,9 @@ import { fetchActivities, deleteActivity } from '@/api/activity';
     },
     methods: {
       fetchTasks() {
-        fetchActivities()
+        fetchtasks()
             .then(response => {
-              this.activities = response.data;
+              this.tasks = response;
             })
             .catch(error => {
               this.$message.error('获取任务列表失败');

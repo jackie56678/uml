@@ -182,12 +182,24 @@ export default {
  <template>
   <div class="register-container">
     <el-divider class="blue-title">新用户注册</el-divider>
-    <el-form ref="userForm" :model="userForm" label-width="100px" class="register-form">
+    <el-form ref="userForm" :model="userForm" :rules="rules" label-width="100px" class="register-form">
       <el-form-item label="用户名" prop="username" required>
         <el-input v-model="userForm.username"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password" required>
         <el-input type="password" v-model="userForm.password"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名" prop="name" required>
+        <el-input v-model="userForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="性别" prop="gender" required>
+        <el-radio-group v-model="userForm.gender">
+          <el-radio label="男">男</el-radio>
+          <el-radio label="女">女</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="年龄" prop="age" required>
+        <el-input-number v-model="userForm.age" :min="0" :max="120"></el-input-number>
       </el-form-item>
       <el-form-item label="注册角色" prop="role" required>
         <el-radio-group v-model="userForm.role">
@@ -212,7 +224,18 @@ export default {
       userForm: {
         username: '',
         password: '',
+        name: '',
+        gender: '',
+        age: null,
         role: null,
+      },
+      rules: {
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        gender: [{ required: true, message: '请选择性别', trigger: 'change' }],
+        age: [{ required: true, type: 'number', message: '请输入年龄', trigger: 'blur' }],
+        role: [{ required: true, message: '请选择注册角色', trigger: 'change' }]
       }
     };
   },

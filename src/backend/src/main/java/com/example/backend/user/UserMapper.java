@@ -1,5 +1,6 @@
 package com.example.backend.user;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -14,4 +15,9 @@ public interface UserMapper {
     void updateUser(User user);
     @Select("SELECT menu, path FROM role WHERE rid = #{role}")
     List<Map<String,String>>  getMenuList(int role);
+    @Select("SELECT username,name,gender,age,uid FROM user where role = 1")
+    List<User> getUserList();
+    @Insert("INSERT INTO healthrecord (uid, name, gender, age) VALUES (#{uid}, #{name}, #{gender}, #{age})")
+    void addFile(User user);
+
 }

@@ -15,10 +15,18 @@ export function getRecord(username) {
     })
 }
 
-export function updateHealthRecord(data) {
+export function updateHealthRecord(uid, data) {
   return request({
-    url: `/healthRecord/updateRecord`,
+    url: `/healthRecord/updateRecord/${uid}`,
     method: 'post',
     data: data
   })
+}
+
+
+export function getHealthRecordbyUid(uid) {
+  return request({
+    url: `/healthRecord/${uid}`,
+    method: 'get'
+  });
 }

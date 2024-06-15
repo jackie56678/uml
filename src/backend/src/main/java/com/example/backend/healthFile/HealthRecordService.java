@@ -15,7 +15,7 @@ public class HealthRecordService {
         return healthRecordMapper.getHealthRecordByUid(uid);
     }
 
-    public boolean updateHealthRecord(HealthRecord healthRecord) {
-        return healthRecordMapper.updateHealthRecord(healthRecord) > 0;
+    public void updateHealthRecord(int uid, HealthRecord healthRecord) {
+        healthRecordMapper.updateHealthRecord(uid,healthRecord);
     }
 }

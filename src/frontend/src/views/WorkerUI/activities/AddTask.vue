@@ -1,72 +1,91 @@
-   <template>
-    <div class="container">
-      <div class="add-task">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>添加新任务</span>
-          </div>
-          <el-form :model="taskForm" @submit.native.prevent="addTask" label-width="100px">
-            <el-form-item label="任务名称">
-              <el-input v-model="taskForm.name" placeholder="请输入任务名称"></el-input>
-            </el-form-item>
-            <el-form-item label="截止时间">
-              <el-input v-model="taskForm.ddl" placeholder="请输入截止时间"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="addTask">添加任务</el-button>
-              <!-- <el-button type="text" @click="cancel">取消</el-button> -->
-              <el-button type="primary" @click="cancel">取消</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
-      </div>
+<template>
+  <div class="container">
+    <div class="add-task">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>添加活动</span>
+        </div>
+        <el-form :model="taskForm" @submit.native.prevent="addTask" label-width="100px">
+          <el-form-item label="活动名称">
+            <el-input v-model="taskForm.name" placeholder="请输入活动名称"></el-input>
+          </el-form-item>
+          <el-form-item label="开始时间">
+            <el-date-picker
+              v-model="taskForm.startTime"
+              type="datetime"
+              :picker-options="pickerOptions"
+              placeholder="选择日期时间">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="addTask">添加活动</el-button>
+            <el-button type="primary" @click="cancel">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
     </div>
-  </template>
-  
-  <script>
-  import { addtask } from '@/api/task';
-  export default {
-    data() {
-      return {
-        taskForm: {
-          name: '',
-          ddl:'',
-          completed: 0 // 默认新任务为未完成状态
-        }
-      };
-    },
-    methods: {
-      addTask() {
-        addtask(this.taskForm)
-          .then(() => {
-            this.$message.success('任务已添加');
-            this.taskForm.name = ''; // 清空表单
-            this.$router.push('/todo/list'); // 假设你有一个路由用于添加任务
-          })
-          .catch(error => {
-            this.$message.error('添加任务失败');
-            console.error('Error:', error);
-          });
+  </div>
+</template>
+
+<script>
+import { addActivity } from '@/api/activity';
+export default {
+  data() {
+    return {
+      taskForm: {
+        name: '',
+        startTime: '',
       },
-      cancel() {
-        this.$router.go(-1);
+      pickerOptions: {
+        // 设置时间选择器的格式
+        selectableRange: '00:00:00 - 23:59:59'
       }
+    };
+  },
+  methods: {
+    addTask() {
+      // 将时间格式转换为字符串，以便传递给后端
+      this.taskForm.startTime = this.taskForm.startTime ? this.formatDateTime(this.taskForm.startTime) : null;
+      addActivity(this.taskForm)
+        .then(() => {
+          this.$message.success('任务已添加');
+          this.taskForm.name = ''; // 清空表单
+          this.taskForm.startTime = ''; // 清空时间选择器
+          this.$router.go(-1); // 假设你有一个路由用于添加任务
+        })
+        .catch(error => {
+          this.$message.error('添加任务失败');
+          console.error('Error:', error);
+        });
+    },
+    cancel() {
+      this.$router.go(-1);
+    },
+    // 格式化日期时间
+    formatDateTime(dateTime) {
+      const year = dateTime.getFullYear();
+      const month = ('0' + (dateTime.getMonth() + 1)).slice(-2);
+      const day = ('0' + dateTime.getDate()).slice(-2);
+      const hours = ('0' + dateTime.getHours()).slice(-2);
+      const minutes = ('0' + dateTime.getMinutes()).slice(-2);
+      const seconds = ('0' + dateTime.getSeconds()).slice(-2);
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
-  };
-  </script>
-  
-  <style scoped>
-  .container {
-    display: flex;
-    justify-content: center;
   }
-  
-  .add-task {
-    margin: 80px;
-  }
-  
-  .box-card {
-    width: 500px;
-  }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.add-task {
+  margin: 80px;
+}
+
+.box-card {
+  width: 500px;
+}
+</style>

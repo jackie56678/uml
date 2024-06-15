@@ -73,4 +73,13 @@ public class UserService {
     public User findUserByUsername(String username) {
         return  userMapper.findUserByUsername(username);
     }
+
+    public List<User> getUserList(){
+        List<User> userList = userMapper.getUserList();
+        return userList;
+    }
+    @Transactional
+    public void addFile(User user){
+        userMapper.addFile(user);
+    }
 }

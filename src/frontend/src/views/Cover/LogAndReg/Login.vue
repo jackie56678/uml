@@ -41,11 +41,17 @@ export default {
           if (response.success === true) {
             localStorage.setItem('ACCESS_TOKEN', response.token);
             this.$message.success('登录成功');
-            this.$router.push('/profile');
+            if (response.message === 1)
+              this.$router.push('/profile');
+            else if (response.message === 2)
+              this.$router.push('/worker/profile');
+            else if (response.message === 3)
+              this.$router.push('/admin/profile');
           } else {
             this.$message.error('用户名或密码错误');
           }
         })
+
         .catch(error => {
           this.$message.error('网络出现问题');
         });

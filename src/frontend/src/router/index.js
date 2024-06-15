@@ -22,22 +22,23 @@ const routes = [
     name: 'Register',
     component: () => import( '../views/Cover/LogAndReg/Register.vue')
   },
-  // {
-  //   path:'/profile',
-  //   component:Layout,
-  //   children:[
-  //     {
-  //       path: 'editProfile',
-  //       name: 'editProfile',
-  //       component: () => import( '../views/UserUI/profile/editProfile.vue')
-  //     },
-  //     {
-  //       path: '',
-  //       name: 'profile',
-  //       component: () => import('../views/UserUI/profile/Profile.vue')
-  //     },
-  //   ]
-  // },
+
+  {
+    path:'/profile',
+    component:Layout,
+    children:[
+      {
+        path: 'editProfile',
+        name: 'editProfile',
+        component: () => import( '../views/UserUI/profile/editProfile.vue')
+      },
+      {
+        path: '',
+        name: 'profile',
+        component: () => import('../views/UserUI/profile/Profile.vue')
+      },
+    ]
+  },
   ///////////////////////////////////////////////////////
   {
     path:'/relative',
@@ -101,36 +102,59 @@ const routes = [
     }
   ]
 },
-
-{
-  path:'/profile',
-  component:Layout,
-  children:[
-    {
-      path: 'editProfile',
-      name: 'editProfile',
-      component: () => import( '../views/UserUI/profile/editProfile.vue')
-    },
-    {
-      path: '',
-      name: 'profile',
-      component: () => import('../views/UserUI/profile/Profile.vue')
-    },
-  ]
-},
 {
   path:'/worker',
   component:Layout,
   children:[
+    {
+      path: 'food',
+      name: 'food',
+      component: () => import( '../views/WorkerUI/serviceApply/food.vue')
+    },
+    {
+      path: 'medicine',
+      name: 'medicine',
+      component: () => import( '../views/WorkerUI/serviceApply/medicine.vue')
+    },
     {
       path: 'editProfile',
       name: 'editProfile',
       component: () => import( '../views/WorkerUI/profile/editProfile.vue')
     },
     {
-      path: '/profile',
+      path: 'profile',
       name: 'profile2',
       component: () => import('../views/WorkerUI/profile/Profile.vue')
+    },
+    {
+      path: 'todolist',
+      name: 'todolist',
+      component: () => import( '../views/WorkerUI/todo/todolist.vue')
+    },
+    {
+      path: 'activity',
+      name: 'activity',
+      component: () => import( '../views/WorkerUI/activities/todolist.vue')
+    },
+    {
+      path: 'activity/add',
+      name: 'addActivity',
+      component: () => import( '../views/WorkerUI/activities/AddTask.vue')
+    },
+    {
+      path: 'emer',
+      name: 'emergency',
+      component: () => import( '../views/WorkerUI/emergency/emergency.vue')
+    },
+    {
+      path: 'file',
+      name: 'file',
+      component: () => import( '../views/WorkerUI/healthfile/file.vue')
+    },
+    {
+      path: 'healthfile',
+      name: 'healthfile',
+      component: () => import( '../views/WorkerUI/healthfile/health.vue')
     },
   ]
 },

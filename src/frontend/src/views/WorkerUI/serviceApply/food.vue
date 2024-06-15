@@ -4,7 +4,7 @@
       <el-button type="primary" icon="el-icon-picture" @click="redirectToImagePage">食品资源</el-button>
       <el-button type="primary" icon="el-icon-picture" @click="redirectToVideoPage">医药资源</el-button>
     </div>
-    <div class="resource-list">
+    <div class="resource-list" :style="{ minHeight: listMinHeight }">
       <div class="image-list">
         <div v-for="(url, index) in imageResources" :key="index" class="image-item">
           <img :src="url" alt="Image" @click="viewImage(url)"> 
@@ -22,7 +22,8 @@ import { getAccessToken } from "@/utils/auth";
 export default {
   data() {
     return {
-      imageResources: []
+      imageResources: [],
+      listMinHeight: '70vh' // 设置最小高度
     };
   },
   created() {
@@ -38,6 +39,11 @@ export default {
       .then(response => {
         const baseURL = 'http://localhost:8000/picture/';
         this.imageResources = response.data.data.map(image => baseURL + image);
+        if (this.imageResources.length === 0) {
+          this.listMinHeight = '30vh'; // 没有图片时，设置最小高度为页面高度
+        } else {
+          this.listMinHeight = 'auto'; // 有图片时，自动调整最小高度
+        }
       })
       .catch(error => {
         console.error('Error fetching image resources:', error);
@@ -50,10 +56,10 @@ export default {
       console.log('查看图片:', url);
     },
     redirectToImagePage() {
-      this.$router.push('/service/food');
+      this.$router.push('/worker/food');
     },
     redirectToVideoPage() {
-      this.$router.push('/service/medicine');
+      this.$router.push('/worker/medicine');
     }
   }
 };

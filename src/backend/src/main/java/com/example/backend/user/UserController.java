@@ -18,16 +18,25 @@ public class UserController {
     @PostMapping("/add")
     public String addUser(@RequestBody User user) {
         userService.addUser(user);
-        return "用户添加成功";
+        if(user.getRole()==1){
+            User user2 = userService.findUserByUsername(user.getUsername());
+            user.setUid(user2.getUid());
+            userService.addFile(user);
+            return "用户添加成功1";
+        }
+        return "用户添加成功2";
     }
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody User loginUser) {
-        Map<String, Object> result = new HashMap<>();boolean success = userService.loginUser(loginUser.username, loginUser.password);
+        Map<String, Object> result = new HashMap<>();
+        boolean success = userService.loginUser(loginUser.getUsername(), loginUser.getPassword());
         if (success) {
-            String token = JwtUtil.generateToken(loginUser.username);
+            String token = JwtUtil.generateToken(loginUser.getUsername());
+            User user = userService.findUserByUsername(loginUser.getUsername());
+            int role = user.getRole();
             result.put("success", true);
-            result.put("message", "登录成功");
+            result.put("message", role);
             result.put("token", token);
         } else {
             result.put("success", false);
@@ -50,6 +59,25 @@ public class UserController {
             return CommonResult.error(400,"身份识别出现错误");
         }
     }
+    @GetMapping("/list")
+    public CommonResult<?> getUserList(@RequestHeader("Authorization") String ACCESS_TOKEN) {
+        try {
+            String token = ACCESS_TOKEN.substring(7);
+            User userInfo = userService.getUserInfoByToken(token);
+            int role = userInfo.getRole();
+            if(role==2){
+                List<User> userList = userService.getUserList();
+                return CommonResult.success(userList);
+            }
+            else{
+                return CommonResult.error(401,"身份认证失败");
+            }
+        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            return CommonResult.error(400,"身份识别出现错误");
+        }
+    }
+
     @GetMapping("/info")
     public CommonResult<?> getUserInfo(@RequestHeader("Authorization") String ACCESS_TOKEN) {
         try {
@@ -68,7 +96,7 @@ public class UserController {
         try {
             String token = ACCESS_TOKEN.substring(7);
             User userInfo = userService.getUserInfoByToken(token);
-            user.username = userInfo.getUsername();
+            user.setUsername(userInfo.getUsername());
             userService.update(user);
             return CommonResult.success(user);
         } catch (Exception e) {
