@@ -2,6 +2,7 @@ package com.example.backend.source;
 
 
 import com.example.backend.CommonResult;
+import com.example.backend.Event;
 import com.example.backend.Request;
 import com.example.backend.user.User;
 import com.example.backend.user.UserService;
@@ -80,7 +81,40 @@ public class SourceController {
 
         return CommonResult.success("Food requested successfully");
     }
+    @PostMapping("/emer")
+    public CommonResult<String> emer(@RequestHeader("Authorization") String accessToken, @RequestBody String location) throws Exception {
+        // Check authorization
+        System.out.println(location);
+        String token = accessToken.substring(7);
+        User user = userService.getUserInfoByToken(token);
 
+        if(user.getRole()!=1)
+            return CommonResult.error(400,"身份验证失败");
+        Event event = new Event();
+        event.setTime(LocalDateTime.now());
+        event.setLocation(location);
+        event.setAddress(user.getAddress());
+        event.setName(user.getName());
+        event.setPhone(user.getPhone());
+        sourceMapper.addEvent(event);
+
+        return CommonResult.success("Event requested successfully");
+    }
+
+    @GetMapping("/fetchemer")
+    public CommonResult<?> fetchemer(@RequestHeader("Authorization") String accessToken) throws Exception {
+        // Check authorization
+        System.out.println("start");
+        String token = accessToken.substring(7);
+        User user = userService.getUserInfoByToken(token);
+
+        if(user.getRole()!=2)
+            return CommonResult.error(400,"身份验证失败");
+
+        List<Event> events = sourceMapper.fetchEvent();
+
+        return CommonResult.success(events);
+    }
     @PostMapping("/requestmedicine")
     public CommonResult<String> requestMedicine(@RequestHeader("Authorization") String accessToken, @RequestParam int mid) throws Exception {
        String token = accessToken.substring(7);

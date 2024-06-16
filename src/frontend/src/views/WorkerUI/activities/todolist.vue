@@ -15,6 +15,7 @@
             <el-button size="mini" @click="editActivity(scope.row)">修改</el-button>
           </template>
         </el-table-column> -->
+        <el-table-column prop="location" label="活动地点" width="300"></el-table-column>
         <el-table-column label="删除操作" width="300">
           <template slot-scope="scope">
             <el-button size="mini" @click="deleteActivity(scope.row)">删除</el-button>

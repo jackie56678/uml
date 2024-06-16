@@ -11,6 +11,6 @@ public interface ActivityMapper {
 
     @Delete("DELETE FROM Activities WHERE aid = #{aid}")
     void deleteActivity(@Param("aid") Long aid);
-    @Insert("INSERT INTO activities(name, uploadTime, StartTime) VALUES (#{activity.name}, #{activity.uploadTime}, #{activity.startTime})")
+    @Insert("INSERT INTO activities(name,location,uploadTime, StartTime) VALUES (#{activity.name}, #{activity.location},#{activity.uploadTime}, #{activity.startTime})")
     void addActivity(@Param("activity") Activity activity);
 }

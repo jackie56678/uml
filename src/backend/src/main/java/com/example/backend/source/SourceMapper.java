@@ -1,5 +1,6 @@
 package com.example.backend.source;
 
+import com.example.backend.Event;
 import com.example.backend.Request;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -34,4 +35,9 @@ public interface SourceMapper {
 
     @Select("SELECT description FROM medicine WHERE mid = #{mid}")
     String getMedicineName(int mid);
+    @Insert("INSERT INTO event(name, phone, time, address, location, description, isSolved) " +
+            "VALUES(#{name}, #{phone}, #{time}, #{address}, #{location}, #{description}, #{isSolved})")
+    void addEvent(Event event);
+    @Select("SELECT * from event")
+    List<Event> fetchEvent();
 }

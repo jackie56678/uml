@@ -9,13 +9,22 @@
           <el-form-item label="活动名称">
             <el-input v-model="taskForm.name" placeholder="请输入活动名称"></el-input>
           </el-form-item>
+          <el-form-item label="活动地点">
+            <el-input v-model="taskForm.location" placeholder="请输入活动地点"></el-input>
+          </el-form-item>
           <el-form-item label="开始时间">
-            <el-date-picker
+            <!-- <el-date-picker
               v-model="taskForm.startTime"
               type="datetime"
               :picker-options="pickerOptions"
               placeholder="选择日期时间">
-            </el-date-picker>
+            </el-date-picker> -->
+            <el-date-picker
+      v-model="taskForm.startTime"
+      type="datetime"
+      :picker-options="pickerOptions"
+      placeholder="选择日期时间">
+    </el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="addTask">添加活动</el-button>
@@ -34,6 +43,7 @@ export default {
     return {
       taskForm: {
         name: '',
+        location:'',
         startTime: '',
       },
       pickerOptions: {
@@ -42,7 +52,32 @@ export default {
       }
     };
   },
+  mounted() {
+    this.customTimePicker();
+  },
   methods: {
+    customTimePicker() {
+      const picker = this.$refs.datePicker;
+      if (picker) {
+        const timePanel = picker.pickerPanel.$refs.timeSpinner;
+        if (timePanel) {
+          // 自定义滚动逻辑，使小时和分钟的滚动是循环的
+          timePanel.scrollToOption = function (type, index) {
+            const el = this.$refs[type + 'List'];
+            if (el) {
+              const max = type === 'hour' ? 23 : 59;
+              const min = 0;
+              if (index > max) {
+                index = min;
+              } else if (index < min) {
+                index = max;
+              }
+              el.scrollTop = index * 32;
+            }
+          };
+        }
+      }
+    },
     addTask() {
       // 将时间格式转换为字符串，以便传递给后端
       this.taskForm.startTime = this.taskForm.startTime ? this.formatDateTime(this.taskForm.startTime) : null;

@@ -9,6 +9,7 @@
   
         <el-table :data="activities" style="width: 100%">
           <el-table-column prop="name" label="活动名称" width="500" ></el-table-column>
+          <el-table-column prop="location" label="活动地点" width="500" ></el-table-column>
           <el-table-column prop="startTime" label="开始时间" width="500"></el-table-column>
         </el-table>
   
