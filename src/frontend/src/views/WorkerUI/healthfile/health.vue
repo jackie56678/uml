@@ -3,15 +3,19 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>{{ healthRecord.name }}的健康档案</span>
-        <el-button style="float: right;" type="primary" @click="editMode = !editMode">
-          {{ editMode ? '取消编辑' : '编辑' }}
-        </el-button>
+        <div style="float: right;">
+          <el-button @click="back" style="margin-right: 10px;">返回</el-button>
+          <el-button type="primary" @click="editMode = !editMode">
+            {{ editMode ? '取消编辑' : '编辑' }}
+          </el-button>
+        </div>
       </div>
+
       <el-form :model="healthRecord" label-width="120px" class="health-record-form">
-        <el-form-item label="身高 (米)">
+        <el-form-item label="身高 (厘米)">
           <el-input-number v-model="healthRecord.height" :disabled="!editMode" :step="0.01" :min="0"></el-input-number>
         </el-form-item>
-        <el-form-item label="体重 (千克)">
+        <el-form-item label="体重 (斤)">
           <el-input-number v-model="healthRecord.weight" :disabled="!editMode" :step="0.1" :min="0"></el-input-number>
         </el-form-item>
         <el-form-item label="血型">
@@ -67,8 +71,9 @@
         </el-form-item>
         <el-form-item v-if="editMode">
           <el-button type="primary" @click="saveHealthRecord">保存</el-button>
-          <el-button @click="back">返回</el-button>
+
         </el-form-item>
+
       </el-form>
     </el-card>
   </div>

@@ -38,3 +38,13 @@ export function deletetask(task){
     })
 }
 
+export function toggle(code,rid){
+    return request({
+        url: '/tasks/toggle',
+        method: 'post',
+        data: {
+            code:code,
+            rid,rid
+        }
+    })
+}

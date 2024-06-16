@@ -16,10 +16,10 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
 
 ## 小队api
-api:
-  bluelm:
-    app-id: "3033936351"
-    secret: "JCuXgJuLbtINqlYy"
+#api:
+#  bluelm:
+#    app-id: "3033936351"
+#    secret: "JCuXgJuLbtINqlYy"
 ## 初始api
 #api:
 #  bluelm:
@@ -27,9 +27,10 @@ api:
 #    secret: "NSBeCiTewMNoLacx"
 
 file:
-  pic-dir: "C:\\Users\\12952\\Pictures\\AIGC\\picture\\"
-  vid-dir: "C:\\Users\\12952\\Pictures\\AIGC\\video\\"
-#
+  fod-dir: "C:\\Users\\12952\\Pictures\\UML\\food\\"
+  med-dir: "C:\\Users\\12952\\Pictures\\UML\\medicine\\"
+
+
 #file:
 #  pic-dir: "\\ssadmin-server\\source\\picture\\"
 #  vid-dir: "\\ssadmin-server\\source\\video\\"

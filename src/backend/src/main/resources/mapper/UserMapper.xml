@@ -10,12 +10,15 @@
     </select>
 
     <update id="updateUser">
-        UPDATE user
+        UPDATE User
         SET
             name = #{name},
             gender = #{gender},
             birthDate = #{birthDate},
-            description = #{description}
+            description = #{description},
+            age = #{age},
+            address = #{address},
+            phone = #{phone}
         WHERE username = #{username}
     </update>
 

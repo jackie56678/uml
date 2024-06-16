@@ -97,6 +97,7 @@ public class UserController {
             String token = ACCESS_TOKEN.substring(7);
             User userInfo = userService.getUserInfoByToken(token);
             user.setUsername(userInfo.getUsername());
+            user.setAge(userInfo.getAge());
             userService.update(user);
             return CommonResult.success(user);
         } catch (Exception e) {

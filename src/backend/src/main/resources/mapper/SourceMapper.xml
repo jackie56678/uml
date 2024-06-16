@@ -3,10 +3,18 @@
 <mapper namespace="com.example.backend.source.SourceMapper">
 
     <insert id="addPicture" parameterType="com.example.backend.source.Picture">
-        INSERT INTO picture (uid, description, date, url)
-        VALUES (#{uid}, #{description}, #{date}, #{url})
+        INSERT INTO picture (description, date, url)
+        VALUES ( #{description}, #{date}, #{url})
     </insert>
 
+    <insert id="addMedicine" parameterType="com.example.backend.source.Medicine">
+        INSERT INTO medicine (description, date, url)
+        VALUES (#{description}, #{date}, #{url})
+    </insert>
+    <insert id="addFood" parameterType="com.example.backend.source.Food">
+        INSERT INTO food (description, date, url)
+        VALUES (#{description}, #{date}, #{url})
+    </insert>
     <insert id="addVideo" parameterType="com.example.backend.source.Video">
         INSERT INTO video (uid, description, date, url)
         VALUES (#{uid}, #{description}, #{date}, #{url})
@@ -14,14 +22,12 @@
 
     <select id="getAllPictureUrls" resultType="String">
         SELECT url
-        FROM picture
-        WHERE uid = #{uid}
+        FROM food
     </select>
 
     <select id="getAllVideoUrls" resultType="String">
         SELECT url
-        FROM video
-        WHERE uid = #{uid}
+        FROM medicine
     </select>
 <!--    &lt;!&ndash; 查找任务 &ndash;&gt;-->
 <!--    <select id="findTaskById" resultType="com.example.backend.task.Task">-->

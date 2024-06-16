@@ -4,13 +4,22 @@
       <el-button type="primary" icon="el-icon-picture" @click="redirectToImagePage">食品资源</el-button>
       <el-button type="primary" icon="el-icon-picture" @click="redirectToVideoPage">医药资源</el-button>
     </div>
-    <div class="resource-list">
-      <div class="video-list">
-        <div v-for="(url, index) in videoResources" :key="index" class="video-item">
-          <video :src="url" controls alt="Video" @click="viewVideo(url)"></video>
+    <div class="resource-list" :style="{ minHeight: listMinHeight }">
+      <div class="image-list">
+        <div v-for="(item, index) in imageResources" :key="index" class="image-item">
+          <img :src="item.url" alt="Image" @click="viewImage(item)">
+          <div class="image-description">{{ item.description }}</div>
+          <el-button
+  class="request-button"
+  type="primary"
+  @click="requestMedicine(item.mid)"
+>
+  请求
+</el-button>
+
         </div>
       </div>
-      <!-- <el-button class="fixed-add-button" type="primary" icon="el-icon-plus" @click="addVideo"></el-button> -->
+      <!-- <el-button class="fixed-add-button" type="primary" icon="el-icon-plus" @click="addImage"></el-button> -->
     </div>
   </div>
 </template>
@@ -18,42 +27,64 @@
 <script>
 import axios from 'axios';
 import { getAccessToken } from "@/utils/auth";
-
+import { requestmedicine } from "@/api/source"; // 假设你的API函数在这个路径
 export default {
   data() {
     return {
-      videoResources: []
+      imageResources: [],
+      listMinHeight: 'calc(100vh - 120px)' // 设置最小高度
     };
   },
   created() {
-    this.fetchVideoResources();
+    this.fetchImageResources();
   },
   methods: {
-    fetchVideoResources() {
-      axios.get('/api/source/videos', {
+    fetchImageResources() {
+      axios.get('/api/source/medicine', {
         headers: {
           'Authorization': 'Bearer ' + getAccessToken(),
         }
       })
       .then(response => {
-        const baseURL = 'http://localhost:8000/video/';
-        this.videoResources = response.data.data.map(video => baseURL + video);
-      })
+    console.log('API response:', response.data); // Log the API response
+    this.imageResources = response.data.data.map(image => ({
+        url: 'http://localhost:8000/medicine/' + image.url,
+        description: image.description ? image.description : '无描述',
+        mid:image.mid
+    }));
+    console.log('Formatted image resources:', this.imageResources); // Log the formatted image resources
+    if (this.imageResources.length === 0) {
+        this.listMinHeight = 'calc(100vh - 90px)'; // 没有图片时，设置最小高度为页面高度减去页面头部的高度
+    } else {
+        this.listMinHeight = 'auto'; // 有图片时，自动调整最小高度
+    }
+})
       .catch(error => {
-        console.error('Error fetching video resources:', error);
+        console.error('Error fetching image resources:', error);
       });
     },
-    addVideo() {
-      this.$router.push('/source/addVideo');
+    addImage() {
+      this.$router.push('/worker/addMedicine');
     },
-    viewVideo(url) {
-      console.log(url);
+    viewImage(item) {
+      console.log('查看图片:', item.url);
+      console.log('图片描述:', item.description);
     },
     redirectToImagePage() {
       this.$router.push('/service/food');
     },
     redirectToVideoPage() {
       this.$router.push('/service/medicine');
+    },
+    requestMedicine(mid) {
+      requestmedicine(mid)
+        .then(response => {
+          this.$message.success('请求成功');
+        })
+        .catch(error => {
+          this.$message.error('请求失败');
+          console.error('Error requesting food:', error);
+        });
     }
   }
 };
@@ -61,9 +92,10 @@ export default {
 
 <style scoped>
 .resource-page {
-  background-color: #f4f6f8; /* 浅灰色背景 */
+  background-color: #f4f6f8;
   min-height: 100vh;
   padding: 20px;
+  position: relative;
 }
 
 .resource-navbar {
@@ -74,40 +106,52 @@ export default {
 }
 
 .resource-list {
-  background-color: #ffffff; /* 白色背景 */
-  border: 1px solid #ddd; /* 浅灰色边框 */
+  background-color: #ffffff;
+  border: 1px solid #ddd;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
-.video-list {
+.image-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 一行四列 */
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   padding: 10px;
 }
 
-.video-item {
+.image-item {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
+  position: relative;
 }
 
-.video-item:hover {
-  transform: scale(1.05); /* 鼠标悬停放大效果 */
+.image-item:hover {
+  transform: scale(1.05);
 }
 
-.video-item video {
-  width: 100%; /* 视频宽度调整 */
+.image-item img {
+  width: 100%;
   height: auto;
   display: block;
 }
 
+.image-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
 .fixed-add-button {
-  position: fixed;
+  position: absolute;
   bottom: 20px;
   right: 20px;
   border-radius: 50%;

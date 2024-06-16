@@ -1,4 +1,6 @@
 package com.example.backend.task;
+import com.example.backend.CommonResult;
+import com.example.backend.Request;
 import com.example.backend.user.UserService;
 import com.example.backend.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/tasks")
@@ -14,20 +17,39 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private TaskMapper taskMapper;
 
     @Autowired
     private UserService userService;  // 确保 UserService 能够被注入
 
+    @PostMapping("/toggle")
+    public CommonResult<?> toggle(@RequestHeader("Authorization") String ACCESS_TOKEN,@RequestBody Map<String, Object> requestData) throws Exception {
+        System.out.println("chenggongle");
+        String token = ACCESS_TOKEN.substring(7);
+        // 从 token 中获取用户信息
+        User user = userService.getUserInfoByToken(token);
+        if(user.getRole()!=2)
+            return CommonResult.error(400,"身份验证失败");
+        boolean code = (boolean) requestData.get("code");
+        int rid = (int) requestData.get("rid");
+
+        taskMapper.toggle(!code,rid);
+        return CommonResult.success(200);
+    }
     @GetMapping("/mytasks")
     public ResponseEntity<?> getMyTasks(@RequestHeader("Authorization") String ACCESS_TOKEN) {
         try {
             String token = ACCESS_TOKEN.substring(7);
             // 从 token 中获取用户信息
             User user = userService.getUserInfoByToken(token);
+            if(user.getRole()!=2)
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("身份验证失败");
             // 使用用户ID获取任务列表
             //System.out.println(user.getId());
-            List<Task> tasks = taskService.getTasksByUserId(user.getUid());
-            return ResponseEntity.ok(tasks);
+            List<Request> requests = taskMapper.getTasks();
+            System.out.println(requests);
+            return ResponseEntity.ok(requests);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

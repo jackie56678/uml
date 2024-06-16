@@ -65,7 +65,7 @@ export default {
       });
       formData.append('description', this.description);
 
-      axios.post('/api/source/uploadImage', formData, {
+      axios.post('/api/source/uploadFood', formData, {
         headers: {
           'Authorization': 'Bearer ' + getAccessToken(),
           'Content-Type': 'multipart/form-data'
@@ -77,7 +77,7 @@ export default {
         // Clear file list and description after successful upload
         this.fileList = [];
         this.description = '';
-        this.$router.push('/source/picture');
+        this.$router.go(-1);
       })
       .catch(error => {
         this.$message.error("Failed to upload images");

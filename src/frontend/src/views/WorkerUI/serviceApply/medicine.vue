@@ -4,10 +4,10 @@
       <el-button type="primary" icon="el-icon-picture" @click="redirectToImagePage">食品资源</el-button>
       <el-button type="primary" icon="el-icon-picture" @click="redirectToVideoPage">医药资源</el-button>
     </div>
-    <div class="resource-list">
+    <div class="resource-list" :style="{ minHeight: listMinHeight }">
       <div class="image-list">
         <div v-for="(item, index) in imageResources" :key="index" class="image-item">
-          <img :src="item.url" alt="Image" @click="viewImage(item)"> 
+          <img :src="item.url" alt="Image" @click="viewImage(item)">
           <div class="image-description">{{ item.description }}</div>
         </div>
       </div>
@@ -23,7 +23,8 @@ import { getAccessToken } from "@/utils/auth";
 export default {
   data() {
     return {
-      imageResources: []
+      imageResources: [],
+      listMinHeight: 'calc(100vh - 120px)' // 设置最小高度
     };
   },
   created() {
@@ -31,24 +32,43 @@ export default {
   },
   methods: {
     fetchImageResources() {
-      axios.get('/api/source/images', {
+      axios.get('/api/source/medicine', {
         headers: {
           'Authorization': 'Bearer ' + getAccessToken(),
         }
       })
+      // .then(response => {
+      //   console.log('API response:', response.data); // Log the API response
+      //   this.imageResources = response.data.data.map(image => ({
+      //     url: 'http://localhost:8000/medicine/' + image,
+      //     description: 'No description' // Adjust this as needed if there's a description field
+      //   }));
+      //   console.log('Formatted image resources:', this.imageResources); // Log the formatted image resources
+      //   if (this.imageResources.length === 0) {
+      //     this.listMinHeight = 'calc(100vh - 90px)'; // 没有图片时，设置最小高度为页面高度减去页面头部的高度
+      //   } else {
+      //     this.listMinHeight = 'auto'; // 有图片时，自动调整最小高度
+      //   }
+      // })
       .then(response => {
-        this.imageResources = response.data.data.map(image => ({
-          url: 'http://localhost:8000/picture/' + image.url,
-          description: image.description
-          
-        }));
-      })
+    console.log('API response:', response.data); // Log the API response
+    this.imageResources = response.data.data.map(image => ({
+        url: 'http://localhost:8000/medicine/' + image.url,
+        description: image.description ? image.description : '无描述'
+    }));
+    console.log('Formatted image resources:', this.imageResources); // Log the formatted image resources
+    if (this.imageResources.length === 0) {
+        this.listMinHeight = 'calc(100vh - 90px)'; // 没有图片时，设置最小高度为页面高度减去页面头部的高度
+    } else {
+        this.listMinHeight = 'auto'; // 有图片时，自动调整最小高度
+    }
+})
       .catch(error => {
         console.error('Error fetching image resources:', error);
       });
     },
     addImage() {
-      this.$router.push('/source/addPicture');
+      this.$router.push('/worker/addMedicine');
     },
     viewImage(item) {
       console.log('查看图片:', item.url);
@@ -69,6 +89,7 @@ export default {
   background-color: #f4f6f8;
   min-height: 100vh;
   padding: 20px;
+  position: relative;
 }
 
 .resource-navbar {
@@ -124,7 +145,7 @@ export default {
 }
 
 .fixed-add-button {
-  position: fixed;
+  position: absolute;
   bottom: 20px;
   right: 20px;
   border-radius: 50%;

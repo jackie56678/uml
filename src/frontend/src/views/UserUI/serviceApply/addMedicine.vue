@@ -6,6 +6,7 @@
       list-type="picture-card"
       :before-upload="handleBeforeUpload"
       :limit="limit"
+      action=""
       :file-list="fileList"
       @remove="handleRemove"
       :on-exceed="handleExceed"
@@ -15,11 +16,11 @@
         请上传
         <template v-if="fileSize"> 大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b> </template>
         <template v-if="fileType"> 格式为 <b style="color: #f56c6c">{{ fileType.join("/") }}</b> </template>
-        的视频文件
+        的文件
       </div>
     </el-upload>
 
-    <el-form ref="videoForm" :model="videoForm" label-width="100px" style="margin-top: 20px;">
+    <el-form ref="imageForm" :model="imageForm" label-width="100px" style="margin-top: 20px;">
       <el-form-item label="描述">
         <el-input v-model="description"></el-input>
       </el-form-item>
@@ -43,11 +44,11 @@ export default {
     },
     fileSize: {
       type: Number,
-      default: 300, // Increased size limit for videos
+      default: 10,
     },
     fileType: {
       type: Array,
-      default: () => ["mp4", "avi", "mkv"], // Common video formats
+      default: () => ["png", "jpg", "jpeg"],
     },
   },
   data() {
@@ -57,6 +58,7 @@ export default {
       showTip: true
     };
   },
+  
   methods: {
     submitForm() {
       const formData = new FormData();
@@ -65,22 +67,22 @@ export default {
       });
       formData.append('description', this.description);
 
-      axios.post('/api/source/uploadVideo', formData, {
+      axios.post('/api/source/uploadMedicine', formData, {
         headers: {
           'Authorization': 'Bearer ' + getAccessToken(),
           'Content-Type': 'multipart/form-data'
         }
       })
       .then(response => {
-        this.$message.success("Videos uploaded successfully");
+        this.$message.success("Images uploaded successfully");
         console.log('Upload successful', response);
         // Clear file list and description after successful upload
         this.fileList = [];
         this.description = '';
-        this.$router.push('/source/video');
+        this.$router.go(-1);
       })
       .catch(error => {
-        this.$message.error("Failed to upload videos");
+        this.$message.error("Failed to upload images");
         console.error('Upload failed', error);
       });
     },

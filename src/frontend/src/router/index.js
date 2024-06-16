@@ -78,7 +78,17 @@ const routes = [
       }
     ]
   },
-  
+  {
+    path:'/emergency',
+    component:Layout,
+    children:[
+      {
+        path: '',
+        name: 'emer',
+        component: () => import('../views/UserUI/emergency/eme.vue')
+      },
+    ]
+  },
 {
   path:'/file',
   component:Layout,
@@ -112,9 +122,19 @@ const routes = [
       component: () => import( '../views/WorkerUI/serviceApply/food.vue')
     },
     {
+      path: 'addFood',
+      name: 'addfood',
+      component: () => import( '../views/WorkerUI/serviceApply/addPicture.vue')
+    },
+    {
       path: 'medicine',
       name: 'medicine',
       component: () => import( '../views/WorkerUI/serviceApply/medicine.vue')
+    },
+    {
+      path: 'addMedicine',
+      name: 'addmedicine',
+      component: () => import( '../views/WorkerUI/serviceApply/addMedicine.vue')
     },
     {
       path: 'editProfile',
