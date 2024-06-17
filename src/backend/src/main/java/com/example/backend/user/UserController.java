@@ -11,7 +11,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private UserService userService;
 
@@ -97,11 +98,17 @@ public class UserController {
             String token = ACCESS_TOKEN.substring(7);
             User userInfo = userService.getUserInfoByToken(token);
             user.setUsername(userInfo.getUsername());
-            user.setAge(userInfo.getAge());
-            userService.update(user);
+            System.out.println("the age is :"+userInfo.getAge());
+            user.setAge(user.getAge());
+//            userService.update(user);
+            userMapper.updateUser(user);
             return CommonResult.success(user);
         } catch (Exception e) {
             return CommonResult.error(400,"身份识别出现错误");
         }
+    }
+    @PostMapping("/password")
+    public String getPass(@RequestBody String string){
+        return UserService.getMD5(string,"我是增加的辅助信息");
     }
 }

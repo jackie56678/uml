@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="login-box">
-      <h2 class="login-title">智慧养老社区</h2>
+      <h2 class="login-title">智慧养老系统</h2>
       <el-form ref="loginForm" :model="loginForm" label-width="100px" class="login-form">
         <el-form-item label="用户名">
           <el-input v-model="loginForm.username"></el-input>

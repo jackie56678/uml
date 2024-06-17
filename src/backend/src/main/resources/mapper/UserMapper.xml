@@ -9,17 +9,17 @@
         SELECT * FROM user WHERE username = #{username}
     </select>
 
-    <update id="updateUser">
-        UPDATE User
-        SET
-            name = #{name},
-            gender = #{gender},
-            birthDate = #{birthDate},
-            description = #{description},
-            age = #{age},
-            address = #{address},
-            phone = #{phone}
-        WHERE username = #{username}
-    </update>
+<!--    <update id="updateUser">-->
+<!--        UPDATE user-->
+<!--        SET-->
+<!--            name = #{name},-->
+<!--            gender = #{gender},-->
+<!--            birthDate = #{birthDate},-->
+<!--            description = #{description},-->
+<!--            age = #{age},-->
+<!--            address = #{address},-->
+<!--            phone = #{phone}-->
+<!--        WHERE username = #{username}-->
+<!--    </update>-->
 
 </mapper>
